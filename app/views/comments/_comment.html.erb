@@ -1,0 +1,24 @@
+<!--
+
+"rendering partial *COLLECTIONS*", this is important! More automatic behaviour!
+
+"the render method [in show.html.erb] iterates over the [given] collection..."
+"it assigns each [item in the collection] to a local variable named the *same
+as the partial*..."
+
+https://guides.rubyonrails.org/getting_started.html#rendering-partial-collections
+
+-->
+<% unless comment.archived? %>
+  <li>
+    <div><b><%= comment.commenter %></b> says:</div>
+    <div><%= comment.body %></div>
+    <div>
+      <!-- note the second option, probably specific to link_to helper: I
+      assume it's building up the URL from /post/post_id/comment/comment_id?
+      -->
+      <%= link_to "Delete comment", [comment.post, comment],
+        data: { turbo_method: :delete, turbo_confirm: "Sure?" } %>
+    </div>
+  </li>
+<% end %>

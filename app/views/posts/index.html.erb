@@ -1,0 +1,23 @@
+<h1>Posts!</h1>
+<!-- this method on @posts is from the Visible concern, which gets includ-ed
+into the post model. posts controller sets up @posts (as Post.all) when
+defining index, which I guess is how we can eventually get at it here.
+-->
+<p><b><%= @posts.public_count %></b> to be precise</p>
+<ul>
+  <% @posts.each do |post| %>
+    <% unless post.archived? %>
+      <li>
+        <!-- <a href="<%= post_path(post) %>"><%= post.title %></a> -->
+        <!-- Helpers galore: -->
+        <%= link_to post.title, post %> [<%= post.status %>] (<%= link_to "edit", edit_post_path(post.id) %>)
+        <!-- can use (post.id) or simply (post) above -->
+        <%= form_with model: post, method: :delete do |form| %>
+        <%= form.submit "Delete" %>
+        <% end %>
+        <br>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
+<%= link_to "New post", new_post_path %>

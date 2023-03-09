@@ -1,0 +1,38 @@
+<!-- underscore _name.html.erb implies this is a partial (shared view) -->
+<!-- form_with helper -->
+<%= form_with model: @post do |form| %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+    <% @post.errors.full_messages_for(:title).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <br>
+
+
+  <div>
+    <%= form.label :body %><br>
+    <%= form.text_area :body %>
+    <% @post.errors.full_messages_for(:body).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.label :status %><br>
+    <%= form.select :status, [nil, 'public', 'private', 'archived'] %>
+    <!-- you could include ", selected: 'public'" above, but then when editing,
+    the actually-selected value isn't reflected in the input, which is silly -->
+    <!-- guide didn't ask for this (yet) but it's useful: -->
+    <% @post.errors.full_messages_for(:status).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
+  </div>
+  <br>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

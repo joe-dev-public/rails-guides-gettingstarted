@@ -1,0 +1,55 @@
+<%= link_to "<-- Back to posts", posts_path %>
+<h1><%= @post.title %></h1>
+<p><%= @post.body %></p>
+<!-- could also just use (@post) here: -->
+<!-- <%= link_to "Edit post", edit_post_path(@post.id) %> -->
+<%= link_to "Edit post", edit_post_path(@post) %>
+<br><br>
+<%= link_to "Delete post (Turbo)", post_path(@post), data: {
+  turbo_method: :delete,
+  turbo_confirm: "Are you sure?"
+} %>
+<br><br>
+<!-- guide shows Turbo approach, but not basic form approach: -->
+<%= form_with model: @post, method: :delete do |form| 
+  form.submit "Delete (form)"
+end %>
+<h2>Comments</h2>
+<ul>
+<!-- this works, and requires "@comments = @post.comments" in the show method
+of the posts_controller -->
+<%
+# @comments.each do |comment|
+%>
+<!-- but you can also do what the guide suggests, which is nice cos it's
+slightly terser, and makes use of the nesting stuff (which seems like a faff,
+so would be nice to justify the inclusion of! -->
+<%
+  #@post.comments.each do |comment|
+%>
+<%
+# But it's moot, cos the code that uses those .each above is commented below
+# and has been replaced with a partial :¬)
+=begin%>
+  <li>
+    <div><b><%= comment.commenter %></b> says:</div>
+    <div><%= comment.body %></div>
+  </li>  
+<%
+=end%>
+<%
+# end
+%>
+<!-- partial: -->
+<%= render @post.comments %>
+</ul>
+<h3>Add new comment</h3>
+<!-- rails knows this means _form in app/views/comments
+https://guides.rubyonrails.org/getting_started.html#rendering-a-partial-form 
+
+UNLIKE with the posts/_form partial, which uses a local variable, we use an
+instance variable here, which I guess *kinda* goes against the guide's best-
+practice recommendation that it's better to pass local variables to partials?
+(https://guides.rubyonrails.org/getting_started.html#using-partials-to-share-view-code)
+-->
+<%= render 'comments/form' %>
